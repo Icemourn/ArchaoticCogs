@@ -10,14 +10,17 @@ from .utils.chat_formatting import *
 import asyncio
 import aiohttp
 import random
+import json
 
 class Enigmata:
     """These commands give you insight into the lore of Enigmata: Stellar War."""
 
     def __init__(self, bot):
+        loreDir = "data/enigmata/lore.json"
+        imgDir = "data/enigmata/settings.json"
         self.bot = bot
-        self.lore = dataIO.load_json("data/enigmata/lore.json")
-        self.images = dataIO.load_json("data/enigmata/settings.json")
+        self.lore = dataIO.load_json(loreDir)
+        self.images = dataIO.load_json(imgDir)
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def __unload(self):

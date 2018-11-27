@@ -26,6 +26,15 @@ class Enigmata:
     def __unload(self):
         self.session.close()
 
+    async def mkDictImg(self, customname, filename, filedir):
+        '''
+        Helper function for generating image entries.
+
+        Image entries are defined as Python dictionaries, to be written to JSON later.
+        '''
+       return {customname: {"filename": filename, "filedir": filedir} }
+
+
     async def first_word(self, msg):
         return msg.split(" ")[0].lower()
 
@@ -178,7 +187,18 @@ class Enigmata:
 
             if msg.attachments != []:
                 filename = msg.attachments[0]["filename"][-5:]
-                
+
+                # Prompting user for custom name:
+                await self.bot.say("What will you name your submission?")
+                while msg is not None:
+                    msg = await self.bot.wait_for_message(author=author, timeout=60)
+                    if msg is None:
+                        await self.bot.say("No image uploaded then.")
+                        break
+                    else
+                        customname = msg
+                        break
+                                
                 directory = "data/enigmata/{}/{}".format(server.id, filename)
                 if cmd is None:
                     cmd = filename.split(".")[0]
